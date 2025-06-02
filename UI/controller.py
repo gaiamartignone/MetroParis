@@ -20,24 +20,20 @@ class Controller:
         if dd.label == "Stazione di Partenza":
             for f in fermate:
                 dd.options.append(ft.dropdown.Option(text=f.nome,
-                                                     data=f,
-                                                     on_click=self.read_DD_Partenza))
+                                                     key=f.id_fermata))
+            dd.on_change = self.read_DD_Partenza
         elif dd.label == "Stazione di Arrivo":
             for f in fermate:
                 dd.options.append(ft.dropdown.Option(text=f.nome,
-                                                     data=f,
-                                                     on_click=self.read_DD_Arrivo))
+                                                     key=f.id_fermata))
+            dd.on_change = self.read_DD_Arrivo
 
     def read_DD_Partenza(self,e):
-        print("read_DD_Partenza called ")
-        if e.control.data is None:
-            self._fermataPartenza = None
-        else:
-            self._fermataPartenza = e.control.data
+        key = e.control.value
+        self._fermataPartenza = next((f for f in self._model.fermate if f.id_fermata == key), None)
+        print(f"Fermata di partenza selezionata: {self._fermataPartenza}")
 
     def read_DD_Arrivo(self,e):
-        print("read_DD_Arrivo called ")
-        if e.control.data is None:
-            self._fermataArrivo = None
-        else:
-            self._fermataArrivo = e.control.data
+        key = e.control.value
+        self._fermataArrivo = next((f for f in self._model.fermate if f.id_fermata == key), None)
+        print(f"Fermata di partenza selezionata: {self._fermataArrivo}")
